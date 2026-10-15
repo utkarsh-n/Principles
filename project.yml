@@ -1,0 +1,98 @@
+name: Principles
+options:
+  bundleIdPrefix: com.utkarsh
+  deploymentTarget:
+    iOS: '27.0'
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: '6.0'
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: '1.0'
+    CURRENT_PROJECT_VERSION: '1'
+targets:
+  HarmonicCore:
+    type: framework
+    platform: iOS
+    sources: [Sources/HarmonicCore]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.harmonic.core
+  Principles:
+    type: application
+    platform: iOS
+    sources: [App]
+    dependencies:
+      - target: HarmonicCore
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Principles
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UIUserInterfaceStyle: Dark
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        ITSAppUsesNonExemptEncryption: false
+        LSApplicationCategoryType: public.app-category.education
+        NSMotionUsageDescription: Optional motion changes instrument lighting. It never changes the sound or mathematical model.
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.harmonic
+        PRODUCT_MODULE_NAME: Harmonic
+        TARGETED_DEVICE_FAMILY: '1'
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  HarmonicCoreTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests/HarmonicCoreTests]
+    dependencies:
+      - target: HarmonicCore
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.harmonic.coretests
+  HarmonicSessionTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests/SessionTests]
+    dependencies:
+      - target: Principles
+      - target: HarmonicCore
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.harmonic.sessiontests
+        TARGETED_DEVICE_FAMILY: '1'
+  HarmonicUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: Principles
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.harmonic.uitests
+        TARGETED_DEVICE_FAMILY: '1'
+schemes:
+  Principles:
+    build:
+      targets:
+        Principles: all
+    test:
+      gatherCoverageData: false
+      targets:
+        - HarmonicCoreTests
+        - HarmonicSessionTests
+        - HarmonicUITests
